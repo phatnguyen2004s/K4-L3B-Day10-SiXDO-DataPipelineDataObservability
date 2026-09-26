@@ -3,7 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from statistics import mean
 import os
+import re
 import sys
+import time
 import types
 from typing import Any
 
@@ -16,6 +18,10 @@ from retrieval.embeddings import MiniLMEmbeddings
 from retrieval.index import LocalEmbeddingIndex
 from retrieval.llm import build_llm
 from retrieval.qa import answer_question
+
+
+JUDGE_MAX_ATTEMPTS = 3
+_quota_exhausted = False
 
 
 class JudgeVerdict(BaseModel):
@@ -58,15 +64,30 @@ Return:
 - correct = true only when the answer is materially correct
 - short reasoning
 """.strip()
+    global _quota_exhausted
     try:
+        if _quota_exhausted or os.getenv("JUDGE_MODE", "").lower() == "heuristic":
+            raise RuntimeError("LLM judge disabled for this run")
         llm = build_llm(settings=settings, temperature=0.0).with_structured_output(JudgeVerdict)
-        return llm.invoke(prompt)
-    except Exception:
+        for attempt in range(JUDGE_MAX_ATTEMPTS):
+            try:
+                return llm.invoke(prompt)
+            except Exception as exc:
+                # Free-tier quota (429): cho dung so giay API goi y roi thu lai.
+                retry_after = re.search(r"retry in ([\d.]+)s", str(exc))
+                if "RESOURCE_EXHAUSTED" not in str(exc) or not retry_after:
+                    raise
+                if attempt == JUDGE_MAX_ATTEMPTS - 1:
+                    # Het quota ca sau khi retry -> ngat LLM judge cho phan con lai cua run.
+                    _quota_exhausted = True
+                    raise
+                time.sleep(min(float(retry_after.group(1)) + 1, 90))
+    except Exception as exc:
         score = 5 if _token_f1(reference, prediction) >= 0.95 else 3 if _token_f1(reference, prediction) >= 0.5 else 1
         return JudgeVerdict(
             score=score,
             correct=score >= 3,
-            reasoning="Fallback heuristic judge used because the LLM evaluator was unavailable.",
+            reasoning=f"Fallback heuristic judge used because the LLM evaluator was unavailable ({type(exc).__name__}: {str(exc)[:80]}).",
         )
 
 
@@ -137,6 +158,10 @@ def evaluate_pipeline(
         "judge_accuracy": mean(1.0 if item["judge"]["correct"] else 0.0 for item in answers),
         "mean_judge_score": mean(item["judge"]["score"] for item in answers),
     }
+    fallback_count = sum(item["judge"]["reasoning"].startswith("Fallback heuristic judge") for item in answers)
+    summary["judge_backend"] = (
+        "llm" if fallback_count == 0 else "heuristic_fallback" if fallback_count == len(answers) else "mixed"
+    )
     summary["ragas"] = _run_ragas(settings, answers)
 
     bundle = EvaluationBundle(summary=summary, answers=answers)
