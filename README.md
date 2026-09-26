@@ -30,3 +30,23 @@
 2. Tích hợp **Freshness Check** (`age_days`) vào Quality Gate
 3. Chạy **Baseline → Corruption → Repair** → xuất bảng đối chiếu 3 trạng thái
 4. **Live Demo** trên bảng & nộp link repo lên VLearn LMS
+
+---
+
+## Cách chạy & kết quả (SiXDO — Nguyễn Tiến Phát, 2A202602387)
+
+```bash
+uv sync --python 3.12                      # hoặc: python -m pip install -e ".[dev]"
+cp .env.example .env                       # điền GOOGLE_API_KEY
+uv run python script/run_phase1.py         # baseline
+uv run python script/run_corruption_flow.py
+./script/run_tests.sh                      # pytest + coverage (>= 80%)
+```
+
+| Metric | Baseline | Corrupted | Repaired |
+|---|---:|---:|---:|
+| `retrieval_hit_rate` | 1.00 | 0.90 | 1.00 |
+| `mean_token_f1` | 1.00 | 0.50 | 1.00 |
+| Quality gate (GX 1.x + freshness) | PASS | FAIL | PASS |
+
+Chi tiết: [`data/reports/corruption_report.md`](data/reports/corruption_report.md), [`report/group_report.md`](report/group_report.md), [`report/2A202602387_NguyenTienPhat.md`](report/2A202602387_NguyenTienPhat.md). Judge dùng heuristic (`JUDGE_MODE=heuristic`) do quota Gemini free không đủ — xem mục 11 của báo cáo nhóm.
