@@ -1,0 +1,189 @@
+{
+  "generated_at": "2026-09-26T06:47:53.866160+00:00",
+  "seed": 42,
+  "input_rows": 24,
+  "output_rows": 22,
+  "scenario_count": 6,
+  "scenarios": [
+    {
+      "scenario": "drop_latest_records",
+      "params": {
+        "ratio": 0.2
+      },
+      "affected_rows": 5,
+      "changes": [
+        {
+          "paper_id": "10.1145/3637528.3671812",
+          "published": "2026-07-22"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671808",
+          "published": "2026-07-19"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671804",
+          "published": "2026-07-05"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671807",
+          "published": "2026-06-25"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671802",
+          "published": "2026-06-12"
+        }
+      ]
+    },
+    {
+      "scenario": "blank_summary",
+      "params": {
+        "rows": 3
+      },
+      "affected_rows": 3,
+      "changes": [
+        {
+          "paper_id": "10.1145/3637528.3671810",
+          "before": "Embedding quality checks directly into data pipelines enables fail-closed governance. We show how Great Expectations suites catch schema drifts and null fields before documents reach the embedding model.",
+          "after": ""
+        },
+        {
+          "paper_id": "10.1145/3637528.3671801",
+          "before": "Retrieval-Augmented Generation (RAG) significantly improves large language model accuracy by grounding responses in retrieved passages. We explore agentic multi-hop reasoning and routing across heterogeneous vector indices.",
+          "after": ""
+        },
+        {
+          "paper_id": "10.1145/3637528.3671811",
+          "before": "Dense vector search excels at conceptual similarity but struggles with exact acronyms and serial numbers. Reciprocal Rank Fusion of sparse lexical scores and dense embeddings achieves optimal recall.",
+          "after": ""
+        }
+      ]
+    },
+    {
+      "scenario": "inject_noise",
+      "params": {
+        "rows": 3,
+        "every_n_words": 3,
+        "tokens": [
+          "#@!x9Qz",
+          "~~%%",
+          "lorem_ipsum",
+          "\u00bf\u00bf??",
+          "0xDEADBEEF",
+          "<br/>",
+          "&&&"
+        ]
+      },
+      "affected_rows": 3,
+      "changes": [
+        {
+          "paper_id": "10.1145/3637528.3671820",
+          "before": "An extended empirical study on single LLM is susceptible to confirmation bias when evaluating retrieved evidence. We demonstrate a multi-agent debate architecture where specialized verifier agents critique and corroborate citations Further analysis on scaling parameters.",
+          "after": "&&& An extended empirical 0xDEADBEEF study on single ~~%% LLM is susceptible <br/> to confirmation bias <br/> when evaluating retrieved <br/> evidence. We demonstrate 0xDEADBEEF a multi-agent debate \u00bf\u00bf?? architecture where specialized ~~%% verifier agents critique \u00bf\u00bf?? and corroborate citations 0xDEADBEEF Further analysis on lorem_ipsum scaling parameters."
+        },
+        {
+          "paper_id": "10.1145/3637528.3671816",
+          "before": "An extended empirical study on e define freshness service-level agreements (SLAs) for temporal document ingestion. By tracking document age and update cadence, our orchestrator dynamically prioritizes recrawling high-churn technical corpora Further analysis on scaling parameters.",
+          "after": "&&& An extended empirical &&& study on e #@!x9Qz define freshness service-level &&& agreements (SLAs) for &&& temporal document ingestion. ~~%% By tracking document <br/> age and update \u00bf\u00bf?? cadence, our orchestrator lorem_ipsum dynamically prioritizes recrawling lorem_ipsum high-churn technical corpora ~~%% Further analysis on ~~%% scaling parameters."
+        },
+        {
+          "paper_id": "10.1145/3637528.3671806",
+          "before": "Connecting LLMs directly to raw warehouse tables often results in schema misunderstandings. A governed semantic layer standardizes business metric definitions, dramatically boosting SQL generation accuracy.",
+          "after": "0xDEADBEEF Connecting LLMs directly lorem_ipsum to raw warehouse #@!x9Qz tables often results #@!x9Qz in schema misunderstandings. \u00bf\u00bf?? A governed semantic #@!x9Qz layer standardizes business lorem_ipsum metric definitions, dramatically &&& boosting SQL generation lorem_ipsum accuracy."
+        }
+      ]
+    },
+    {
+      "scenario": "truncate_title",
+      "params": {
+        "rows": 3,
+        "max_chars": 6
+      },
+      "affected_rows": 3,
+      "changes": [
+        {
+          "paper_id": "10.1145/3637528.3671819",
+          "before": "Advanced Perspectives on Synthetic Corruption Testing: Stress-Testing Vector Search Robustness",
+          "after": "Advanc"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671813",
+          "before": "Advanced Perspectives on Agentic Retrieval-Augmented Generation for Knowledge-Intensive Tasks",
+          "after": "Advanc"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671803",
+          "before": "Mitigating Ghost Vectors in Dense Retrieval via Idempotent Indexing",
+          "after": "Mitiga"
+        }
+      ]
+    },
+    {
+      "scenario": "stale_date",
+      "params": {
+        "ratio": 0.4,
+        "shift_days": 365
+      },
+      "affected_rows": 8,
+      "changes": [
+        {
+          "paper_id": "10.1145/3637528.3671823",
+          "before": "2026-06-11",
+          "after": "2025-06-11"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671822",
+          "before": "2026-06-10",
+          "after": "2025-06-10"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671818",
+          "before": "2026-06-06",
+          "after": "2025-06-06"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671817",
+          "before": "2026-06-05",
+          "after": "2025-06-05"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671815",
+          "before": "2026-06-03",
+          "after": "2025-06-03"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671814",
+          "before": "2026-06-02",
+          "after": "2025-06-02"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671809",
+          "before": "2026-04-30",
+          "after": "2025-04-30"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671805",
+          "before": "2026-03-28",
+          "after": "2025-03-28"
+        }
+      ]
+    },
+    {
+      "scenario": "duplicate_rows",
+      "params": {
+        "rows": 3
+      },
+      "affected_rows": 3,
+      "changes": [
+        {
+          "paper_id": "10.1145/3637528.3671823"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671817"
+        },
+        {
+          "paper_id": "10.1145/3637528.3671811"
+        }
+      ]
+    }
+  ]
+}
